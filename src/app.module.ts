@@ -14,6 +14,10 @@ import { BadRequestExceptionFilter } from './filters/bad-request-exception.filte
 import { UnauthorizedExceptionFilter } from './filters/unauthorized-exception.filter';
 import { ForbiddenExceptionFilter } from './filters/forbidden-exception.filter';
 import { NotFoundExceptionFilter } from './filters/not-found.exception.filter';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
+import { WorkspaceModule } from './modules/workspace/workspace.module';
+import { AccessModule } from './modules/access/access.module';
 
 @Module({
   // configure environment variables
@@ -34,6 +38,14 @@ import { NotFoundExceptionFilter } from './filters/not-found.exception.filter';
         uri: configService.get('database.uri'),
       }),
     }),
+
+    AuthModule,
+
+    UserModule,
+
+    WorkspaceModule,
+
+    AccessModule,
   ],
   controllers: [AppController],
   providers: [
