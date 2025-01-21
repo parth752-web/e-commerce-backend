@@ -10,7 +10,11 @@
 
 // @Injectable()
 // export class JwtUserStrategy extends PassportStrategy(Strategy, 'authUser') {
-//   constructor(private readonly configService: ConfigService, private readonly userQueryService: UserQueryService, private readonly accessQueryService: AccessQueryService) {
+//   constructor(
+//     private readonly configService: ConfigService,
+//     private readonly userQueryService: UserQueryService,
+//     private readonly accessQueryService: AccessQueryService,
+//   ) {
 //     super({
 //       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 //       secretOrKey: configService.get('jwt.publicKey'),

@@ -4,6 +4,8 @@ import { HydratedDocument, Schema as MongooseSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DatabaseCollectionNames } from '../shared/enums';
 import { Identifier } from '../shared/types';
+import { UserIdentifier } from './user.schema';
+import { IsDate, IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @Schema({ timestamps: true, collection: DatabaseCollectionNames.WORKSPACE })
 export class Workspace {
@@ -12,6 +14,8 @@ export class Workspace {
     example: '507f191e810c19729de860ea',
   })
   @Expose()
+  @IsMongoId()
+  @IsOptional()
   @Prop({
     type: MongooseSchema.Types.ObjectId,
     default: () => new Types.ObjectId(),
@@ -22,6 +26,8 @@ export class Workspace {
     description: 'The name of the workspace',
     example: 'John',
   })
+  @IsNotEmpty()
+  @IsString()
   @Expose()
   @Prop({
     type: MongooseSchema.Types.String,
@@ -29,18 +35,21 @@ export class Workspace {
   })
   name: string;
 
-  //   @ApiProperty({
-  //     description: 'UserId of the user who created the workspace',
-  //     example: '507f1f77bcf86cd799439011',
-  //   })
-  //   @Expose()
-  //   @Transform(({ key, obj }) => obj[key])
-  //   @Prop({ type: MongooseSchema.Types.ObjectId, ref: DatabaseCollectionNames.USER })
-  //   createdBy: UserIdentifier;
+  @ApiProperty({
+    description: 'UserId of the user who created the workspace',
+    example: '507f1f77bcf86cd799439011',
+  })
+  @IsMongoId()
+  @IsNotEmpty()
+  @Expose()
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: DatabaseCollectionNames.USER })
+  createdBy: UserIdentifier;
 
   @ApiProperty({
     description: 'Date of creation',
   })
+  @IsDate()
+  @IsOptional()
   @Prop()
   @Expose()
   createdAt?: Date;
@@ -48,6 +57,8 @@ export class Workspace {
   @ApiProperty({
     description: 'Date of last update',
   })
+  @IsOptional()
+  @IsDate()
   @Prop()
   @Expose()
   updatedAt?: Date;

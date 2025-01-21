@@ -7,6 +7,7 @@ import { WorkspaceIdentifier } from './workspace.schema';
 import { DatabaseCollectionNames } from '../shared/enums';
 import { AccessRoles } from '../enums/access.enum';
 import { Identifier } from '../shared/types';
+import { IsEnum, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 
 @Schema({
   timestamps: true,
@@ -17,6 +18,8 @@ export class Access {
     description: 'The id of the access document:- accessId',
     example: '5bf142459b72e12b2b1b2cd',
   })
+  @IsMongoId()
+  @IsOptional()
   @Expose()
   @Prop({
     type: MongooseSchema.Types.ObjectId,
@@ -28,6 +31,8 @@ export class Access {
     description: 'The id of the user:- userId',
     example: '64397da0076badf5dfe711b1',
   })
+  @IsMongoId()
+  @IsNotEmpty()
   @Expose()
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: DatabaseCollectionNames.USER })
   user: UserIdentifier;
@@ -36,6 +41,8 @@ export class Access {
     description: 'The workspaces the user has access to workspaceId',
     example: '64397b25365275b5767fc557',
   })
+  @IsMongoId()
+  @IsOptional()
   @Expose()
   @Prop({
     type: MongooseSchema.Types.ObjectId,
@@ -43,6 +50,9 @@ export class Access {
   })
   workspaces?: WorkspaceIdentifier;
 
+  @IsEnum(AccessRoles)
+  @IsOptional()
+  @Expose()
   @ApiProperty({
     description: `The roles the user`,
     example: {
@@ -50,7 +60,6 @@ export class Access {
       '64397bb78fc60ce197238886': AccessRoles.USER,
     },
   })
-  @Expose()
   @Prop({
     type: MongooseSchema.Types.String,
   })
